@@ -1,0 +1,26 @@
+/* Look of the regression tables on the website */
+body { counter-reset: tablenumber; }
+
+table.lasi-table {
+  border-collapse: collapse;
+  margin: 2rem auto 0.4rem auto;
+  font-size: 0.82rem;
+  border-top: 2px solid #222;
+  border-bottom: 2px solid #222;
+}
+table.lasi-table caption {
+  caption-side: top;
+  font-weight: 700;
+  text-align: center;
+  padding-bottom: 0.6rem;
+  counter-increment: tablenumber;
+}
+table.lasi-table caption::before { content: "Table " counter(tablenumber) ". "; }
+
+table.lasi-table td { padding: 3px 9px; text-align: center; border: none; white-space: nowrap; }
+table.lasi-table td.row-label { text-align: left; }
+table.lasi-table tr.rule-above td { border-top: 1px solid #555; }
+
+.table-note { font-size: 0.78rem; max-width: 900px; margin: 0 auto 2.5rem auto; color: #333; }
+.table-wrap { overflow-x: auto; }   /* wide tables scroll on small screens */
+@media (max-width: 900px) { table.lasi-table { display: block; overflow-x: auto; } }

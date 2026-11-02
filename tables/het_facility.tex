@@ -1,0 +1,51 @@
+\begin{table}[H]
+\centering
+\vspace{1.8mm}
+\caption{Number of OPD Visits and Pension: Heterogeneity by Facility Type}
+\label{tab:het_facility}
+\vspace{3mm}
+\adjustbox{max width=\textwidth}{
+\begin{tabular}{lccccccccc}
+\toprule
+\midrule
+ & \multicolumn{9}{c}{\textbf{Number of OPD Visits}} \\
+\cmidrule(lr){2-10}
+ & \multicolumn{3}{c}{\textbf{Public}} & \multicolumn{3}{c}{\textbf{Private}} & \multicolumn{3}{c}{\textbf{Both}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) \\
+\midrule
+\textbf{Any Pension} & -0.040 & -0.178 & -0.017 & 0.165 & 0.179* & 0.217* & -0.175 & -0.025 & 0.074 \\
+ & (0.146) & (0.143) & (0.156) & (0.117) & (0.105) & (0.112) & (0.227) & (0.220) & (0.242) \\
+\midrule
+\textbf{\(R^2\)} & 0.000 & 0.106 & 0.118 & 0.000 & 0.089 & 0.100 & 0.000 & 0.091 & 0.101 \\
+\midrule
+\textbf{Old Age Pension} & -0.120 & -0.261* & -0.109 & 0.180 & 0.162 & 0.215* & -0.141 & 0.102 & 0.221 \\
+ & (0.151) & (0.149) & (0.164) & (0.130) & (0.112) & (0.116) & (0.240) & (0.234) & (0.243) \\
+\midrule
+\textbf{\(R^2\)} & 0.000 & 0.107 & 0.118 & 0.000 & 0.088 & 0.100 & 0.000 & 0.091 & 0.101 \\
+\midrule
+\textbf{Widow Pension} & 0.078 & -0.076 & -0.021 & 0.244 & 0.243 & 0.138 & 0.093 & -0.244 & -0.290 \\
+ & (0.275) & (0.268) & (0.295) & (0.208) & (0.205) & (0.213) & (0.377) & (0.363) & (0.411) \\
+\midrule
+\textbf{\(R^2\)} & 0.000 & 0.106 & 0.118 & 0.000 & 0.088 & 0.100 & 0.000 & 0.091 & 0.101 \\
+\midrule
+\textbf{Annapurna Pension} & 0.403 & 1.430* & 1.487** & -1.314*** & -0.672 & -0.637 & -0.930 & 0.035 & -0.035 \\
+ & (0.747) & (0.732) & (0.746) & (0.385) & (0.409) & (0.421) & (0.866) & (0.733) & (0.716) \\
+\midrule
+\textbf{\(R^2\)} & 0.000 & 0.107 & 0.120 & 0.001 & 0.088 & 0.100 & 0.000 & 0.091 & 0.101 \\
+\midrule
+\textbf{\(N\)} & 4,204 & 4,204 & 4,065 & 9,832 & 9,832 & 9,502 & 2,707 & 2,707 & 2,617 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 4.306 & 4.306 & 4.311 & 4.724 & 4.724 & 4.724 & 6.470 & 6.470 & 6.453 \\
+\midrule
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
+\bottomrule
+\midrule
+\end{tabular}
+}
+\vspace{2mm}
+\begin{minipage}{0.95\textwidth}
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. Public, Private, and Both refer to the type of facility visited. The sample is restricted to respondents with at least one outpatient visit. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+Source: Authors' calculations from LASI
+\end{minipage}
+\end{table}

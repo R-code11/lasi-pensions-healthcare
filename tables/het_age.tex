@@ -1,0 +1,51 @@
+\begin{table}[H]
+\centering
+\vspace{1.8mm}
+\caption{Outpatient Healthcare Utilization and Pension: Heterogeneity by Age}
+\label{tab:het_age}
+\vspace{3mm}
+\adjustbox{max width=\textwidth}{
+\begin{tabular}{lcccccc}
+\toprule
+\midrule
+ & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
+\cmidrule(lr){2-7}
+ & \multicolumn{3}{c}{\textbf{Age $\leq$ 75}} & \multicolumn{3}{c}{\textbf{Age $>$ 75}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & (1) & (2) & (3) & (4) & (5) & (6) \\
+\midrule
+\textbf{Any Pension} & 0.054*** & 0.043*** & 0.051*** & -0.001 & 0.013 & 0.034** \\
+ & (0.008) & (0.008) & (0.008) & (0.015) & (0.014) & (0.014) \\
+\midrule
+\textbf{\(R^2\)} & 0.002 & 0.103 & 0.113 & 0.000 & 0.111 & 0.121 \\
+\midrule
+\textbf{Old Age Pension} & 0.044*** & 0.034*** & 0.049*** & -0.008 & 0.011 & 0.026* \\
+ & (0.009) & (0.008) & (0.008) & (0.015) & (0.014) & (0.015) \\
+\midrule
+\textbf{\(R^2\)} & 0.001 & 0.102 & 0.112 & 0.000 & 0.111 & 0.120 \\
+\midrule
+\textbf{Widow Pension} & 0.069*** & 0.049*** & 0.029** & 0.016 & 0.003 & 0.026 \\
+ & (0.014) & (0.013) & (0.014) & (0.028) & (0.027) & (0.028) \\
+\midrule
+\textbf{\(R^2\)} & 0.001 & 0.102 & 0.111 & 0.000 & 0.111 & 0.120 \\
+\midrule
+\textbf{Annapurna Pension} & -0.039 & -0.035 & -0.025 & 0.013 & -0.002 & -0.007 \\
+ & (0.037) & (0.032) & (0.032) & (0.076) & (0.078) & (0.077) \\
+\midrule
+\textbf{\(R^2\)} & 0.000 & 0.101 & 0.111 & 0.000 & 0.111 & 0.120 \\
+\midrule
+\textbf{\(N\)} & 25,388 & 25,388 & 24,545 & 5,355 & 5,355 & 5,171 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.560 & 0.560 & 0.561 & 0.545 & 0.545 & 0.546 \\
+\midrule
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
+\bottomrule
+\midrule
+\end{tabular}
+}
+\vspace{2mm}
+\begin{minipage}{0.95\textwidth}
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+Source: Authors' calculations from LASI
+\end{minipage}
+\end{table}
