@@ -14,7 +14,7 @@ website:
         text: Analysis and Tables
     right:
       - icon: github
-        href: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY   # <- change this
+        href: https://github.com/R-code11/lasi-pensions-healthcare
   page-footer: "Ramesh Beniwal. Data: LASI Wave 1, 2017-18."
 
 format:
