@@ -1,5 +1,40 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Social Protection in Later Life and Healthcare Utilization in India",
+    "section": "",
+    "text": "This page holds the replication code and the tables for a study of how pension receipt (old age, widow and Annapurna pensions) is related to outpatient and inpatient healthcare use among Indians aged 60-100, using LASI Wave 1."
+  },
+  {
+    "objectID": "index.html#about-this-project",
+    "href": "index.html#about-this-project",
+    "title": "Social Protection in Later Life and Healthcare Utilization in India",
+    "section": "",
+    "text": "This page holds the replication code and the tables for a study of how pension receipt (old age, widow and Annapurna pensions) is related to outpatient and inpatient healthcare use among Indians aged 60-100, using LASI Wave 1."
+  },
+  {
+    "objectID": "index.html#read-the-tables",
+    "href": "index.html#read-the-tables",
+    "title": "Social Protection in Later Life and Healthcare Utilization in India",
+    "section": "Read the tables",
+    "text": "Read the tables\n\nAnalysis and tables: the full document with all tables. Use Other Formats → PDF in the right-hand side menu of that page to download it as a PDF.\nDownload the PDF directly"
+  },
+  {
+    "objectID": "index.html#tables-in-the-analysis",
+    "href": "index.html#tables-in-the-analysis",
+    "title": "Social Protection in Later Life and Healthcare Utilization in India",
+    "section": "Tables in the analysis",
+    "text": "Tables in the analysis\n\nSummary statistics\nMain results: outpatient and inpatient use\nPension amount\nNumber of OPD visits: Tobit and negative binomial\nHeterogeneity (residence, caste, MPCE, education, age, gender, facility type)\nProbit estimates with marginal effects\n\nEach table is also saved as a LaTeX file (folder tables/) that can be pasted directly into Overleaf. They need booktabs, adjustbox, float and amsmath."
+  },
+  {
+    "objectID": "index.html#data",
+    "href": "index.html#data",
+    "title": "Social Protection in Later Life and Healthcare Utilization in India",
+    "section": "Data",
+    "text": "Data\nLASI microdata cannot be redistributed, so it is not part of this repository. Request it from the LASI team (IIPS) and follow the steps in the README."
+  },
+  {
     "objectID": "LASI_analysis.html",
     "href": "LASI_analysis.html",
     "title": "Financial Dependence and Healthcare Utilization among Older Adults",
