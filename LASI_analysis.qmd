@@ -1,0 +1,681 @@
+---
+title: "Financial Dependence and Healthcare Utilization among Older Adults"
+subtitle: "Evidence from the Longitudinal Ageing Study in India (LASI) Wave 1, 2017–18"
+author: "Ramesh Beniwal"
+date: today
+format:
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+  pdf:
+    documentclass: article
+    toc: true
+    number-sections: true
+    geometry: [top=25mm, bottom=25mm, left=20mm, right=20mm]
+    fontsize: 11pt
+    keep-tex: true
+    pdf-engine: xelatex
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{adjustbox}
+        \usepackage{float}
+        \usepackage{amsmath}
+        \usepackage{setspace}
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+# =====================================================================
+# PART 1: LOAD DATA, NAMES, AND HELPER FUNCTIONS
+# Everything below only prepares things. No table is printed here.
+# =====================================================================
+
+options(scipen = 999)          # never show numbers like 1e-05
+library(haven)                 # reads Stata .dta files
+library(dplyr)                 # data handling
+library(fixest)                # regressions (feols, feglm) with fixed effects
+library(marginaleffects)       # AME / MEM for the probit table
+
+# ---------------------------------------------------------------------
+# 1. Read the data
+# ---------------------------------------------------------------------
+# The data file is NOT on GitHub (LASI data cannot be shared publicly).
+# Put LASI_FINAL_PENSION.dta inside the folder called "data".
+data_file <- "data/LASI_FINAL_PENSION.dta"
+if (!file.exists(data_file)) {
+  stop("Data file not found. Put LASI_FINAL_PENSION.dta inside the 'data' folder (see README.md).")
+}
+
+lasi_data <- read_dta(data_file) |>
+  mutate(across(where(is.labelled), as.numeric)) |>   # Stata labels -> plain numbers
+  as.data.frame()
+stopifnot(nrow(lasi_data) > 0)                        # stop if the file is empty
+
+# ---------------------------------------------------------------------
+# 2. Names of the main variables (change here only, if your .dta differs)
+# ---------------------------------------------------------------------
+any_pension_variable    <- "created_pension_status"  # "Any Pension"
+pension_amount_variable <- "any_pension_amt"         # old age + widow pension amount
+
+pension_variables <- c(any_pension_variable, "old_age_pension",
+                       "widow_pension", "annapurna_pension")
+pension_labels    <- c("Any Pension", "Old Age Pension",
+                       "Widow Pension", "Annapurna Pension")
+
+# ---------------------------------------------------------------------
+# 3. Control variables
+# i(x) means "treat x as categories" (one dummy per category).
+# marital_status is binary now (1 = married, 0 = widowed), so it is plain.
+# ---------------------------------------------------------------------
+control_variable_terms <- c(
+  age       = "age",
+  gender    = "gender",
+  residence = "residence_type",
+  religion  = "i(religion)",
+  caste     = "i(caste_social_group)",
+  marital   = "marital_status",
+  education = "i(education)",
+  mpce      = "i(mpce_quintile)")
+
+# Joins the controls into one text like "age + gender + ...".
+# variables_to_drop: controls to leave out (used when the sample is split
+# on that variable, e.g. drop "gender" when running men and women separately).
+build_control_formula <- function(variables_to_drop = NULL) {
+  kept_terms <- control_variable_terms[!names(control_variable_terms) %in% variables_to_drop]
+  paste(kept_terms, collapse = " + ")
+}
+
+# ---------------------------------------------------------------------
+# 4. Regression helpers
+# ---------------------------------------------------------------------
+# Runs the same regression in 3 versions:
+#   (1) no controls, (2) state fixed effects, (3) state fixed effects + controls.
+# Standard errors are clustered by ssuid.
+# If a regression fails (e.g. too few observations) it returns NULL, not an error.
+run_three_specifications <- function(outcome, pension, data, variables_to_drop = NULL) {
+  run_one <- function(right_side, fixed_effects = "") {
+    tryCatch(
+      feols(as.formula(paste(outcome, "~", right_side, fixed_effects)),
+            cluster = ~ssuid, data = data),
+      error = function(e) NULL)
+  }
+  list(
+    run_one(pension),
+    run_one(pension, "| state_id"),
+    run_one(paste(pension, "+", build_control_formula(variables_to_drop)), "| state_id"))
+}
+
+# What is shown in a table cell when a regression could not be estimated.
+empty_cell <- list(coef = "--", se = "", n = "--", mean = "--", r2 = "--")
+
+# Takes ONE fitted model and returns the text for its table column:
+# coefficient with stars, standard error in brackets, N, mean of the
+# dependent variable, and R-squared.
+# Stars: *** p<0.01, ** p<0.05, * p<0.10.
+extract_cell <- function(model, pension, r2_type = "r2") {
+  if (is.null(model) || !pension %in% names(coef(model))) return(empty_cell)
+  p_value <- pvalue(model)[pension]
+  stars <- if (is.na(p_value)) "" else if (p_value < .01) "***" else if (p_value < .05) "**" else if (p_value < .10) "*" else ""
+  list(coef = sprintf("%.3f%s", coef(model)[pension], stars),
+       se   = sprintf("(%.3f)", se(model)[pension]),
+       n    = format(nobs(model), big.mark = ","),
+       mean = sprintf("%.3f", mean(model.matrix(model, type = "lhs"))),
+       r2   = sprintf("%.3f", fixest::r2(model, r2_type)))
+}
+
+# Runs the three versions and extracts the three table cells.
+estimate_three_cells <- function(outcome, pension, data, variables_to_drop = NULL) {
+  models <- run_three_specifications(outcome, pension, data, variables_to_drop)
+  lapply(models, extract_cell, pension = pension)
+}
+
+# Takes a list of cells and joins one item (like "coef") with " & ",
+# which is how LaTeX separates columns.
+join_row_cells <- function(item, cells) {
+  paste(sapply(cells, `[[`, item), collapse = " & ")
+}
+
+# ---------------------------------------------------------------------
+# 5. Small LaTeX row builders (same layout in every table)
+# ---------------------------------------------------------------------
+# "State FE" and "Additional Controls" rows; groups = number of 3-column groups.
+fixed_effects_rows <- function(groups) {
+  c(paste0("\\textbf{State FE} & ", paste(rep(c("No", "Yes", "Yes"), groups), collapse = " & "), " \\\\"),
+    paste0("\\textbf{Additional Controls} & ", paste(rep(c("No", "No", "Yes"), groups), collapse = " & "), " \\\\"))
+}
+
+# N, Mean of Dep. Variable and R-squared rows.
+sample_statistics_rows <- function(cells, r2_label = "\\(R^2\\)") {
+  c(paste0("\\textbf{\\(N\\)} & ", join_row_cells("n", cells), " \\\\"),
+    paste0("\\textbf{\\(Mean\\; of\\; Dep.\\; Variable\\)} & ", join_row_cells("mean", cells), " \\\\"),
+    paste0("\\textbf{", r2_label, "} & ", join_row_cells("r2", cells), " \\\\"))
+}
+
+# Header row with group names spread over columns, e.g. "Urban" over (1)-(3).
+column_group_header <- function(group_names, columns_per_group = 3) {
+  paste0(" & ", paste0("\\multicolumn{", columns_per_group, "}{c}{\\textbf{", group_names, "}}", collapse = " & "), " \\\\")
+}
+
+# The thin lines under those group names.
+column_group_lines <- function(number_of_groups, columns_per_group = 3) {
+  starts <- 2 + columns_per_group * (0:(number_of_groups - 1))
+  ends   <- 1 + columns_per_group * (1:number_of_groups)
+  paste(paste0("\\cmidrule(lr){", starts, "-", ends, "}"), collapse = " ")
+}
+
+# Row with column numbers (1) (2) (3) ...
+column_numbers_row <- function(number_of_columns) {
+  paste0(" & ", paste0("(", 1:number_of_columns, ")", collapse = " & "), " \\\\")
+}
+
+# ---------------------------------------------------------------------
+# 6. Writing a table: ONE function does both jobs
+# ---------------------------------------------------------------------
+# (a) always saves the LaTeX version in the folder "tables" (for Overleaf);
+# (b) shows the table in the document: as LaTeX in the PDF, as an HTML table
+#     on the website. So every table is built only once.
+
+# Turns one LaTeX cell (\textbf{...}, $<$ and so on) into HTML text.
+latex_cell_to_html <- function(text) {
+  text <- trimws(text)
+  text <- gsub("$\\leq$", "&le;", text, fixed = TRUE)
+  text <- gsub("$<$",     "&lt;", text, fixed = TRUE)
+  text <- gsub("$>$",     "&gt;", text, fixed = TRUE)
+  text <- gsub("\\;", " ", text, fixed = TRUE)
+  text <- gsub("\\(", "",  text, fixed = TRUE)
+  text <- gsub("\\)", "",  text, fixed = TRUE)
+  text <- gsub("\\quad", "&emsp;", text, fixed = TRUE)
+  text <- gsub("\\_", "_", text, fixed = TRUE)
+  text <- gsub("R^2", "R<sup>2</sup>", text, fixed = TRUE)
+  repeat {                                   # bold / italic, innermost first
+    before <- text
+    text <- gsub("\\\\textbf\\{([^{}]*)\\}", "<b>\\1</b>", text)
+    text <- gsub("\\\\textit\\{([^{}]*)\\}", "<i>\\1</i>", text)
+    if (identical(before, text)) break
+  }
+  text
+}
+
+# Turns the LaTeX table body (a vector of lines) into HTML table rows.
+latex_body_to_html_rows <- function(body_lines) {
+  html_rows <- character(0)
+  line_before_next_row <- FALSE
+  for (line in trimws(body_lines)) {
+    if (line == "" || grepl("^\\\\(toprule|bottomrule)", line)) next
+    if (grepl("^\\\\(midrule|cmidrule)", line)) { line_before_next_row <- TRUE; next }
+    line  <- sub("\\\\\\\\\\s*$", "", line)                     # remove the final \\
+    cells <- strsplit(paste0(line, "&END"), "&", fixed = TRUE)[[1]]
+    cells <- trimws(cells[-length(cells)])                      # keep empty last cells
+    row_html <- ""
+    for (i in seq_along(cells)) {
+      cell <- cells[i]; span <- 1
+      parts <- regmatches(cell, regexec("^\\\\multicolumn\\{([0-9]+)\\}\\{[a-z]\\}\\{(.*)\\}$", cell))[[1]]
+      if (length(parts) == 3) { span <- parts[2]; cell <- parts[3] }
+      cell_class <- if (i == 1 && span == 1) " class='row-label'" else ""
+      row_html <- paste0(row_html, "<td colspan='", span, "'", cell_class, ">", latex_cell_to_html(cell), "</td>")
+    }
+    row_class <- if (line_before_next_row) " class='rule-above'" else ""
+    html_rows <- c(html_rows, paste0("<tr", row_class, ">", row_html, "</tr>"))
+    line_before_next_row <- FALSE
+  }
+  html_rows
+}
+
+# The main table writer.
+#   file     : name of the .tex file to save inside "tables/"
+#   caption  : table title
+#   label    : short id of the table (for cross-references in LaTeX)
+#   column_spec : LaTeX column layout, e.g. "lcccccc" (1 text column + 6 centred)
+#   body     : the table rows (vector of LaTeX lines)
+#   note     : the text of the footnote
+#   include_significance_line : add "* p<0.10 ..." to the footnote
+write_and_show_table <- function(file, caption, label, column_spec, body, note,
+                                 include_significance_line = TRUE) {
+  body <- as.character(unlist(body))
+  significance_line <- "\\\\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01"
+  note_line <- paste0("\\footnotesize \\textit{Note:} ", note,
+                      if (include_significance_line) paste0(" ", significance_line, "\\\\") else " \\\\")
+  latex_lines <- c(
+    "\\begin{table}[H]", "\\centering", "\\vspace{1.8mm}",
+    paste0("\\caption{", caption, "}"), paste0("\\label{", label, "}"), "\\vspace{3mm}",
+    "\\adjustbox{max width=\\textwidth}{", paste0("\\begin{tabular}{", column_spec, "}"),
+    "\\toprule", "\\midrule", body, "\\bottomrule", "\\midrule", "\\end{tabular}", "}",
+    "\\vspace{2mm}", "\\begin{minipage}{0.95\\textwidth}", note_line,
+    "Source: Authors' calculations from LASI", "\\end{minipage}", "\\end{table}")
+
+  dir.create("tables", showWarnings = FALSE)
+  writeLines(latex_lines, file.path("tables", file))        # (a) save the .tex file
+
+  if (knitr::is_latex_output()) {                           # (b) show it: PDF
+    cat("\n", latex_lines, "\n", sep = "\n")
+  } else {                                                  #     show it: website
+    note_html <- gsub("\\\\_", "_", note)
+    if (include_significance_line) note_html <- paste0(note_html, "<br>* p&lt;0.10, ** p&lt;0.05, *** p&lt;0.01")
+    html <- paste0(
+      "<table class='lasi-table' id='", label, "'><caption>", caption, "</caption>",
+      paste(latex_body_to_html_rows(body), collapse = ""), "</table>",
+      "<div class='table-note'><b>Note:</b> ", note_html,
+      "<br>Source: Authors' calculations from LASI</div>")
+    cat("\n```{=html}\n", html, "\n```\n", sep = "")
+  }
+}
+
+# ---------------------------------------------------------------------
+# 7. Footnote texts used in several tables
+# ---------------------------------------------------------------------
+note_sample_and_pension <- "The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions."
+note_controls <- "Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses."
+note_outpatient_definition <- "Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months."
+note_inpatient_definition  <- "Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months."
+note_opd_visits_definition <- "Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months."
+
+# ---------------------------------------------------------------------
+# 8. Main-results layout (Tables with two pension blocks, 6 columns)
+# ---------------------------------------------------------------------
+# One block = two pensions side by side. Left pension fills columns (1)-(3),
+# right pension fills columns (4)-(6).
+pension_pair_block <- function(outcome, pensions, labels, data = lasi_data) {
+  left  <- estimate_three_cells(outcome, pensions[1], data)
+  right <- estimate_three_cells(outcome, pensions[2], data)
+  both  <- c(left, right)
+  c(paste0("\\textbf{", labels[1], "} & ", join_row_cells("coef", left), " &  &  &  \\\\"),
+    paste0(" & ", join_row_cells("se", left), " &  &  &  \\\\"),
+    paste0("\\textbf{", labels[2], "} &  &  &  & ", join_row_cells("coef", right), " \\\\"),
+    paste0(" &  &  &  & ", join_row_cells("se", right), " \\\\"),
+    "\\midrule", sample_statistics_rows(both))
+}
+
+# Builds a full main table (Any + Old Age block, then Widow + Annapurna block).
+build_main_pension_table <- function(outcome, file, caption, label, outcome_label, note) {
+  body <- c(paste0(" & \\multicolumn{6}{c}{\\textbf{", outcome_label, "}} \\\\"),
+            "\\cmidrule(lr){2-7}", column_numbers_row(6), "\\midrule",
+            pension_pair_block(outcome, pension_variables[1:2], pension_labels[1:2]), "\\midrule",
+            pension_pair_block(outcome, pension_variables[3:4], pension_labels[3:4]), "\\midrule",
+            fixed_effects_rows(2))
+  write_and_show_table(file, caption, label, "lcccccc", body, note)
+}
+
+# ---------------------------------------------------------------------
+# 9. Heterogeneity layout (sample split into groups)
+# ---------------------------------------------------------------------
+# make_group: a group = a name + the rows of the data that belong to it.
+make_group <- function(group_name, condition) {
+  list(name = group_name, data = lasi_data[condition & !is.na(condition), ])
+}
+
+# Builds a heterogeneity table: for each pension, 3 columns per group.
+# variables_to_drop: the control that is also the split variable.
+build_heterogeneity_table <- function(outcome, groups, variables_to_drop, file, caption,
+                                      label, outcome_label, note) {
+  number_of_groups  <- length(groups)
+  number_of_columns <- 3 * number_of_groups
+  results_by_pension <- lapply(1:4, function(i)
+    unlist(lapply(groups, function(group)
+      estimate_three_cells(outcome, pension_variables[i], group$data, variables_to_drop)),
+      recursive = FALSE))
+
+  body <- c(paste0(" & \\multicolumn{", number_of_columns, "}{c}{\\textbf{", outcome_label, "}} \\\\"),
+            paste0("\\cmidrule(lr){2-", number_of_columns + 1, "}"),
+            column_group_header(sapply(groups, `[[`, "name")),
+            column_group_lines(number_of_groups),
+            column_numbers_row(number_of_columns), "\\midrule")
+  for (i in 1:4) {
+    body <- c(body,
+      paste0("\\textbf{", pension_labels[i], "} & ", join_row_cells("coef", results_by_pension[[i]]), " \\\\"),
+      paste0(" & ", join_row_cells("se", results_by_pension[[i]]), " \\\\"), "\\midrule",
+      paste0("\\textbf{\\(R^2\\)} & ", join_row_cells("r2", results_by_pension[[i]]), " \\\\"), "\\midrule")
+  }
+  # N and mean are taken from the first pension block (same sample for all)
+  body <- c(body,
+    paste0("\\textbf{\\(N\\)} & ", join_row_cells("n", results_by_pension[[1]]), " \\\\"),
+    paste0("\\textbf{\\(Mean\\; of\\; Dep.\\; Variable\\)} & ", join_row_cells("mean", results_by_pension[[1]]), " \\\\"),
+    "\\midrule", fixed_effects_rows(number_of_groups))
+  write_and_show_table(file, caption, label, paste0("l", strrep("c", number_of_columns)), body, note)
+}
+
+note_heterogeneity <- paste(note_sample_and_pension, note_outpatient_definition,
+  "Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses.")
+
+# Shortcut for the six outpatient heterogeneity tables.
+build_outpatient_heterogeneity_table <- function(groups, variable_to_drop, short_name, title) {
+  build_heterogeneity_table("outpatient_utilization", groups, variable_to_drop,
+    paste0("het_", short_name, ".tex"),
+    paste0("Outpatient Healthcare Utilization and Pension: Heterogeneity by ", title),
+    paste0("tab:het_", short_name), "Outpatient Healthcare Utilization", note_heterogeneity)
+}
+```
+
+# Summary Statistics
+
+```{r}
+#| label: tbl-summary
+#| results: asis
+
+# One row of the table: N, mean, SD, min, max of a variable.
+format_three_decimals <- function(x) formatC(x, format = "f", digits = 3, big.mark = ",")
+
+summary_row <- function(row_label, values, indent = 0) {
+  values <- values[!is.na(values)]
+  if (length(values) == 0) {
+    return(paste0(strrep("\\quad ", indent), row_label, " & 0 & -- & -- & -- & -- \\\\"))
+  }
+  paste0(strrep("\\quad ", indent), row_label, " & ",
+         formatC(length(values), format = "d", big.mark = ","), " & ",
+         format_three_decimals(mean(values)), " & ", format_three_decimals(sd(values)), " & ",
+         format_three_decimals(min(values)),  " & ", format_three_decimals(max(values)), " \\\\")
+}
+
+# Same, but takes a variable NAME; skips the row if the variable is not in the data.
+summary_row_for_variable <- function(row_label, variable, indent = 0) {
+  if (variable %in% names(lasi_data)) summary_row(row_label, as.numeric(lasi_data[[variable]]), indent) else NULL
+}
+
+# For categories (religion, caste, MPCE): one sub-heading, then one row per category.
+# Mean of a 0/1 dummy = share of people in that category.
+summary_rows_for_categories <- function(heading, variable, category_values, category_labels) {
+  if (!variable %in% names(lasi_data) || length(category_values) == 0) return(NULL)
+  c(paste0("\\textit{\\quad ", heading, "} & & & & & \\\\"),
+    vapply(seq_along(category_values), function(i)
+      summary_row(category_labels[i], as.numeric(lasi_data[[variable]] == category_values[i]), 2),
+      character(1)))
+}
+
+# Pension receipt shown separately by gender, or separately by marital status.
+pension_by_group_rows <- function(pension, heading, group_by) {
+  if (!pension %in% names(lasi_data)) return(NULL)
+  groups <- if (group_by == "gender") {
+    list("Female" = lasi_data$gender == 0, "Male" = lasi_data$gender == 1)
+  } else {
+    list("Married" = lasi_data$marital_status == 1, "Widowed" = lasi_data$marital_status == 0)
+  }
+  c(paste0("\\textit{\\quad ", heading, "} & & & & & \\\\"),
+    vapply(names(groups), function(group_name)
+      summary_row(group_name, as.numeric(lasi_data[[pension]][groups[[group_name]] %in% TRUE]), 2),
+      character(1)))
+}
+
+panel_heading <- function(text) c(paste0("\\multicolumn{6}{c}{\\textbf{", text, "}} \\\\"), "\\midrule")
+
+religion_names <- c("1" = "Hindu", "2" = "Muslim", "3" = "Christian", "4" = "Sikh", "5" = "Other")
+caste_names    <- c("1" = "Scheduled Caste (SC)", "2" = "Scheduled Tribe (ST)",
+                    "3" = "Other Backward Class (OBC)", "4" = "General (Others)")
+religion_values <- sort(unique(na.omit(lasi_data$religion)))
+caste_values    <- sort(unique(na.omit(lasi_data$caste_social_group)))
+
+summary_body <- c(
+  "Variable & N & Mean & SD & Min & Max \\\\", "\\midrule",
+  panel_heading("Panel A: Dependent Variables"),
+  summary_row_for_variable("Outpatient healthcare utilization", "outpatient_utilization"),
+  summary_row_for_variable("Inpatient healthcare utilization", "inpatient"),
+  summary_row_for_variable("Healthcare utilization (overall)", "healthcare_utilization"),
+  "\\midrule",
+  panel_heading("Panel B: Independent Variables"),
+  summary_row_for_variable("Any Pension", any_pension_variable),
+  summary_row_for_variable("Old age pension", "old_age_pension"),
+  summary_row_for_variable("Widow pension", "widow_pension"),
+  summary_row_for_variable("Annapurna pension", "annapurna_pension"),
+  summary_row_for_variable("Financial support received (Yes = 1)", "financial_support"),
+  pension_by_group_rows("old_age_pension", "Old age pension, by gender", "gender"),
+  pension_by_group_rows("old_age_pension", "Old age pension, by marital status", "marital"),
+  pension_by_group_rows("widow_pension", "Widow pension, by gender", "gender"),
+  pension_by_group_rows("widow_pension", "Widow pension, by marital status", "marital"),
+  "\\midrule",
+  panel_heading("Panel C: Control Variables"),
+  summary_row_for_variable("Age (years)", "age"),
+  summary_row_for_variable("Gender (1 = Male)", "gender"),
+  summary_row_for_variable("Education status", "education"),
+  summary_row_for_variable("Residence type (1 = Rural)", "residence_type"),
+  summary_row_for_variable("Marital status (1 = Married)", "marital_status"),
+  summary_rows_for_categories("Religion", "religion", religion_values, religion_names[as.character(religion_values)]),
+  summary_rows_for_categories("Caste / Social group", "caste_social_group", caste_values, caste_names[as.character(caste_values)]),
+  summary_rows_for_categories("MPCE quintile", "mpce_quintile", 1:5, paste0("Quintile ", 1:5)),
+  summary_row_for_variable("Number of children alive", "number_of_children_alive"),
+  summary_row_for_variable("Maximum education of children (years)", "max_education_children"),
+  summary_row_for_variable("Any child employed (1 = Yes)", "children_employed"),
+  "\\midrule",
+  panel_heading("Panel D: Additional Variables"),
+  summary_row_for_variable("Old age pension amount", "old_age_pension_amt"),
+  summary_row_for_variable("Widow pension amount", "widow_pension_amt"),
+  summary_row_for_variable("Any pension amount (old age + widow)", "any_pension_amt"))
+
+write_and_show_table("summary_stats_table.tex", "Summary Statistics", "tab:summarystats", "lrrrrr",
+  summary_body,
+  "N, Mean, SD, Min, and Max are computed on non-missing observations of each variable. For categorical variables, Mean is the proportion of observations in that category. Marital status is coded 1 = married and 0 = widowed; other marital categories are set to missing. For the pension-by-group rows, N is the group size and Mean is the share of the group receiving the pension.",
+  include_significance_line = FALSE)
+```
+
+# Main Results
+
+## Outpatient
+
+```{r}
+#| results: asis
+build_main_pension_table("outpatient_utilization", "outpatient_table.tex",
+  "Outpatient Healthcare Utilization and Pension", "tab:outpatient",
+  "Outpatient Healthcare Utilization",
+  paste(note_sample_and_pension, note_outpatient_definition, note_controls))
+```
+
+## Inpatient
+
+```{r}
+#| results: asis
+build_main_pension_table("inpatient", "inpatient_table.tex",
+  "Inpatient Healthcare Utilization and Pension", "tab:inpatient",
+  "Inpatient Healthcare Utilization",
+  paste(note_sample_and_pension, note_inpatient_definition, note_controls))
+```
+
+# Pension Amount
+
+```{r}
+#| results: asis
+# Only people who report a positive pension amount (log of 0 is undefined).
+amount_sample <- lasi_data[!is.na(lasi_data[[pension_amount_variable]]) &
+                           lasi_data[[pension_amount_variable]] > 0, ]
+log_amount_term <- paste0("log(", pension_amount_variable, ")")
+
+outpatient_cells <- estimate_three_cells("outpatient_utilization", log_amount_term, amount_sample)
+inpatient_cells  <- estimate_three_cells("inpatient", log_amount_term, amount_sample)
+all_cells <- c(outpatient_cells, inpatient_cells)
+
+amount_body <- c(
+  column_group_header(c("Outpatient Healthcare Utilization", "Inpatient Healthcare Utilization")),
+  column_group_lines(2), column_numbers_row(6), "\\midrule",
+  paste0("\\textbf{Any Pension Amount} & ", join_row_cells("coef", all_cells), " \\\\"),
+  paste0(" & ", join_row_cells("se", all_cells), " \\\\"),
+  "\\midrule", sample_statistics_rows(all_cells), "\\midrule", fixed_effects_rows(2))
+
+write_and_show_table("pension_amount_table.tex",
+  "Outpatient and Inpatient Healthcare Utilization and Pension Amount",
+  "tab:pension_amount_out_inp", "lcccccc", amount_body,
+  paste("The sample consists of individuals aged 60-100 years at the time of the survey who report receiving a pension amount. Any Pension Amount is the natural logarithm of the pension amount received by the respondent.",
+        note_outpatient_definition, note_inpatient_definition, note_controls))
+```
+
+# Tobit and Negative Binomial (Number of OPD Visits)
+
+```{r}
+#| results: asis
+library(AER)        # tobit()
+library(sandwich)   # clustered standard errors for tobit / negative binomial
+
+# Controls written with factor() because tobit and glm.nb do not understand i().
+# State fixed effects enter as state dummies.
+tobit_nb_controls <- paste("age + gender + residence_type + factor(religion) +",
+  "factor(caste_social_group) + marital_status + factor(education) +",
+  "factor(mpce_quintile) + factor(state_id)")
+
+# Takes one tobit / negative binomial model and returns coefficient (with stars),
+# clustered standard error, and number of observations.
+clustered_result_cell <- function(model, pension, is_negative_binomial = FALSE) {
+  used_rows <- as.numeric(rownames(if (is_negative_binomial) model$model else model.frame(model)))
+  standard_error <- sqrt(diag(vcovCL(model, cluster = lasi_data$ssuid[used_rows])))[pension]
+  p_value <- 2 * pnorm(-abs(coef(model)[pension] / standard_error))
+  stars <- if (p_value < .01) "***" else if (p_value < .05) "**" else if (p_value < .10) "*" else ""
+  list(coef = sprintf("%.3f%s", coef(model)[pension], stars),
+       se   = sprintf("(%.3f)", standard_error),
+       n    = format(length(used_rows), big.mark = ","))
+}
+
+# For each pension: one Tobit and one Negative Binomial model.
+results <- list()
+for (pension in pension_variables) {
+  model_formula <- as.formula(paste("opd_visits ~", pension, "+", tobit_nb_controls))
+  results <- c(results, list(
+    clustered_result_cell(tobit(model_formula, left = 0, data = lasi_data), pension),
+    clustered_result_cell(MASS::glm.nb(model_formula, data = lasi_data), pension, is_negative_binomial = TRUE)))
+}
+
+# Places pension i's two results in its own pair of columns; other columns stay empty.
+eight_column_row <- function(i, item) {
+  cells <- rep("", 8)
+  cells[(2 * i - 1):(2 * i)] <- c(results[[2 * i - 1]][[item]], results[[2 * i]][[item]])
+  cells
+}
+
+tobit_body <- c(" & \\multicolumn{8}{c}{\\textbf{Number of OPD Visits}} \\\\", "\\cmidrule(lr){2-9}",
+  " & Tobit & NB & Tobit & NB & Tobit & NB & Tobit & NB \\\\", column_numbers_row(8), "\\midrule")
+for (i in 1:4) {
+  tobit_body <- c(tobit_body,
+    paste0(paste(c(paste0("\\textbf{", pension_labels[i], "}"), eight_column_row(i, "coef")), collapse = " & "), " \\\\"),
+    paste0(paste(c("", eight_column_row(i, "se")), collapse = " & "), " \\\\"))
+}
+tobit_body <- c(tobit_body, "\\midrule",
+  paste0("\\textbf{\\(N\\)} & ", paste(sapply(results, `[[`, "n"), collapse = " & "), " \\\\"), "\\midrule",
+  "\\textbf{State FE} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\\\",
+  "\\textbf{Additional Controls} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\\\")
+
+write_and_show_table("opd_visits_tobit_nb_table.tex",
+  "Number of OPD Visits and Pension: Tobit and Negative Binomial Estimates",
+  "tab:opd_tobit_nb", "lcccccccc", tobit_body,
+  paste(note_sample_and_pension, note_opd_visits_definition,
+        "The count includes respondents with zero visits. Odd-numbered columns report Tobit estimates left-censored at zero; even-numbered columns report negative binomial (NB) estimates with a log link. State fixed effects enter as state dummies. Coefficients are not marginal effects, so the sign and significance are the main focus.",
+        note_controls))
+```
+
+# Heterogeneity (Outpatient)
+
+```{r}
+#| results: asis
+build_outpatient_heterogeneity_table(
+  list(make_group("Urban", lasi_data$residence_type == 0), make_group("Rural", lasi_data$residence_type == 1)),
+  "residence", "residence", "Residence")
+
+build_outpatient_heterogeneity_table(
+  list(make_group("Upper Caste", lasi_data$caste_social_group == 4),
+       make_group("Lower Caste", lasi_data$caste_social_group %in% 1:3)),
+  "caste", "caste", "Caste")
+
+build_outpatient_heterogeneity_table(
+  list(make_group("Lower MPCE (Q1-Q3)", lasi_data$mpce_quintile %in% 1:3),
+       make_group("Higher MPCE (Q4-Q5)", lasi_data$mpce_quintile %in% 4:5)),
+  "mpce", "mpce", "MPCE")
+
+build_outpatient_heterogeneity_table(
+  list(make_group("No Education", lasi_data$education == 0), make_group("Any Education", lasi_data$education > 0)),
+  "education", "education", "Education")
+
+build_outpatient_heterogeneity_table(
+  list(make_group("Age $\\leq$ 75", lasi_data$age <= 75), make_group("Age $>$ 75", lasi_data$age > 75)),
+  "age", "age", "Age")
+
+build_outpatient_heterogeneity_table(
+  list(make_group("Male", lasi_data$gender == 1), make_group("Female", lasi_data$gender == 0)),
+  "gender", "gender", "Gender")
+```
+
+## OPD visits by facility type
+
+```{r}
+#| results: asis
+build_heterogeneity_table("opd_visits",
+  list(make_group("Public",  lasi_data$outpatient_facility_type == 1),
+       make_group("Private", lasi_data$outpatient_facility_type == 2),
+       make_group("Both",    lasi_data$outpatient_facility_type == 3)),
+  NULL, "het_facility.tex",
+  "Number of OPD Visits and Pension: Heterogeneity by Facility Type", "tab:het_facility",
+  "Number of OPD Visits",
+  paste(note_sample_and_pension, note_opd_visits_definition,
+        "Public, Private, and Both refer to the type of facility visited. The sample is restricted to respondents with at least one outpatient visit.",
+        note_controls))
+```
+
+# Probit (Outpatient)
+
+```{r}
+#| results: asis
+# Probit regression, plus two "marginal effects":
+#   AME = average marginal effect (effect for each person, then averaged)
+#   MEM = marginal effect at the means (effect for the "average" person)
+# AME / MEM are computed from an equivalent plain glm() with dummies, because
+# the marginaleffects package works with glm objects.
+
+# Same controls, but i(x) is replaced by factor(x) for glm().
+control_formula_with_factors <- gsub("i\\((\\w+)\\)", "factor(\\1)", build_control_formula())
+
+# Runs the 3 probit versions for one pension and returns 3 table cells (with AME, MEM).
+run_probit_three_specifications <- function(pension, outcome = "outpatient_utilization") {
+  fit_probit <- function(right_side, fixed_effects = "")
+    feglm(as.formula(paste(outcome, "~", right_side, fixed_effects)),
+          family = binomial("probit"), cluster = ~ssuid, data = lasi_data)
+  fit_glm <- function(right_side)
+    glm(as.formula(paste(outcome, "~", right_side)), family = binomial("probit"), data = lasi_data)
+
+  fixest_parts <- list(c(pension, ""), c(pension, "| state_id"),
+                       c(paste(pension, "+", build_control_formula()), "| state_id"))
+  glm_parts <- c(pension, paste(pension, "+ factor(state_id)"),
+                 paste(pension, "+", control_formula_with_factors, "+ factor(state_id)"))
+
+  lapply(1:3, function(i) {
+    cell <- extract_cell(fit_probit(fixest_parts[[i]][1], fixest_parts[[i]][2]), pension, r2_type = "pr2")
+    glm_model <- fit_glm(glm_parts[i])
+    cell$ame <- sprintf("%.3f", avg_slopes(glm_model, variables = pension)$estimate[1])
+    cell$mem <- sprintf("%.3f", slopes(glm_model, newdata = "mean", variables = pension)$estimate[1])
+    cell
+  })
+}
+
+probit_results <- lapply(pension_variables, run_probit_three_specifications)   # 4 pensions x 3 versions
+
+# One 6-column row: the 3 cells go in the left half (side = 1) or right half (side = 2).
+six_column_row <- function(cells, side, item) {
+  values <- sapply(cells, `[[`, item)
+  paste(if (side == 1) c(values, "", "", "") else c("", "", "", values), collapse = " & ")
+}
+
+# Four rows for one pension: coefficient, standard error, AME, MEM.
+probit_pension_block <- function(cells, label, side) c(
+  paste0("\\textbf{", label, "} & ", six_column_row(cells, side, "coef"), " \\\\"),
+  paste0(" & ", six_column_row(cells, side, "se"), " \\\\"),
+  paste0("\\quad \\textit{AME} & ", six_column_row(cells, side, "ame"), " \\\\"),
+  paste0("\\quad \\textit{MEM} & ", six_column_row(cells, side, "mem"), " \\\\"))
+
+first_half_cells  <- c(probit_results[[1]], probit_results[[2]])
+second_half_cells <- c(probit_results[[3]], probit_results[[4]])
+
+probit_body <- c(
+  " & \\multicolumn{6}{c}{\\textbf{Outpatient Healthcare Utilization}} \\\\", "\\cmidrule(lr){2-7}",
+  column_numbers_row(6), "\\midrule",
+  probit_pension_block(probit_results[[1]], pension_labels[1], 1),
+  probit_pension_block(probit_results[[2]], pension_labels[2], 2), "\\midrule",
+  paste0("\\textbf{Pseudo \\(R^2\\)} & ", join_row_cells("r2", first_half_cells), " \\\\"), "\\midrule",
+  probit_pension_block(probit_results[[3]], pension_labels[3], 1),
+  probit_pension_block(probit_results[[4]], pension_labels[4], 2), "\\midrule",
+  sample_statistics_rows(second_half_cells, "Pseudo \\(R^2\\)"), "\\midrule", fixed_effects_rows(2))
+
+write_and_show_table("outpatient_probit_table.tex",
+  "Outpatient Healthcare Utilization and Pension: Probit Estimates", "tab:outpatient_probit",
+  "lcccccc", probit_body,
+  paste(note_sample_and_pension, note_outpatient_definition,
+        "Coefficients are probit estimates, and each comes from a separate regression. AME is the average marginal effect and MEM is the marginal effect at the means, both computed from equivalent models with state fixed effects entered as dummies.",
+        note_controls))
+```

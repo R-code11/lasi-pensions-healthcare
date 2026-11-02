@@ -1,0 +1,29 @@
+project:
+  type: website
+  output-dir: docs          # GitHub Pages serves this folder
+  resources:
+    - "tables/*.tex"        # makes the LaTeX tables downloadable from the website
+
+website:
+  title: "LASI: Pensions and Healthcare Use"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: LASI_analysis.qmd
+        text: Analysis and Tables
+    right:
+      - icon: github
+        href: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY   # <- change this
+  page-footer: "Ramesh Beniwal. Data: LASI Wave 1, 2017-18."
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    smooth-scroll: true
+
+execute:
+  echo: false
+  warning: false
+  message: false
