@@ -5,40 +5,31 @@
 \label{tab:inpatient}
 \vspace{3mm}
 \adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccc}
+\begin{tabular}{lccccccccc}
 \toprule
+ & \multicolumn{9}{c}{\textbf{Inpatient Healthcare Utilization}} \\
+\cmidrule(lr){2-10}
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) \\
 \midrule
- & \multicolumn{6}{c}{\textbf{Inpatient Healthcare Utilization}} \\
-\cmidrule(lr){2-7}
- & (1) & (2) & (3) & (4) & (5) & (6) \\
+\textbf{Any Pension} & 0.002 & 0.000 & 0.007 &  &  &  &  &  &  \\
+ & (0.005) & (0.005) & (0.005) &  &  &  &  &  &  \\
+\textbf{Old Age Pension} &  &  &  & 0.001 & -0.000 & 0.001 &  &  &  \\
+ &  &  &  & (0.005) & (0.005) & (0.006) &  &  &  \\
+\textbf{Widow Pension} &  &  &  &  &  &  & 0.003 & -0.001 & 0.018* \\
+ &  &  &  &  &  &  & (0.009) & (0.009) & (0.010) \\
 \midrule
-\textbf{Any Pension} & 0.002 & 0.000 & 0.007 &  &  &  \\
- & (0.005) & (0.005) & (0.005) &  &  &  \\
-\textbf{Old Age Pension} &  &  &  & 0.001 & -0.000 & 0.001 \\
- &  &  &  & (0.005) & (0.005) & (0.006) \\
+\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
+\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
 \midrule
-\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
-\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
-\midrule
-\textbf{Widow Pension} & 0.003 & -0.001 & 0.018* &  &  &  \\
- & (0.009) & (0.009) & (0.010) &  &  &  \\
-\textbf{Annapurna Pension} &  &  &  & 0.017 & 0.043** & 0.043** \\
- &  &  &  & (0.022) & (0.022) & (0.022) \\
-\midrule
-\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
-\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
-\midrule
-\textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
-\textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}

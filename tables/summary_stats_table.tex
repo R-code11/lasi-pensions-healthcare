@@ -4,10 +4,9 @@
 \caption{Summary Statistics}
 \label{tab:summarystats}
 \vspace{3mm}
-\adjustbox{max width=\textwidth}{
+\adjustbox{max totalsize={\textwidth}{0.82\textheight}, center}{
 \begin{tabular}{lrrrrr}
 \toprule
-\midrule
 Variable & N & Mean & SD & Min & Max \\
 \midrule
 \multicolumn{6}{c}{\textbf{Panel A: Dependent Variables}} \\
@@ -21,25 +20,12 @@ Healthcare utilization (overall) & 30,746 & 0.713 & 0.452 & 0.000 & 1.000 \\
 Any Pension & 31,024 & 0.315 & 0.465 & 0.000 & 1.000 \\
 Old age pension & 31,024 & 0.251 & 0.433 & 0.000 & 1.000 \\
 Widow pension & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
-Annapurna pension & 31,024 & 0.011 & 0.106 & 0.000 & 1.000 \\
-\textit{\quad Old age pension, by gender} & & & & & \\
-\quad \quad Female & 16,118 & 0.241 & 0.428 & 0.000 & 1.000 \\
-\quad \quad Male & 14,906 & 0.261 & 0.439 & 0.000 & 1.000 \\
-\textit{\quad Old age pension, by marital status} & & & & & \\
-\quad \quad Married & 20,209 & 0.240 & 0.427 & 0.000 & 1.000 \\
-\quad \quad Widowed & 10,815 & 0.271 & 0.445 & 0.000 & 1.000 \\
-\textit{\quad Widow pension, by gender} & & & & & \\
-\quad \quad Female & 16,118 & 0.114 & 0.318 & 0.000 & 1.000 \\
-\quad \quad Male & 14,906 & 0.000 & 0.000 & 0.000 & 0.000 \\
-\textit{\quad Widow pension, by marital status} & & & & & \\
-\quad \quad Married & 20,209 & 0.001 & 0.024 & 0.000 & 1.000 \\
-\quad \quad Widowed & 10,815 & 0.169 & 0.375 & 0.000 & 1.000 \\
 \midrule
 \multicolumn{6}{c}{\textbf{Panel C: Control Variables}} \\
 \midrule
 Age (years) & 31,024 & 68.864 & 7.434 & 60.000 & 100.000 \\
 Gender (1 = Male) & 31,024 & 0.480 & 0.500 & 0.000 & 1.000 \\
-Education status & 31,024 & 0.460 & 0.498 & 0.000 & 1.000 \\
+Attended school (1 = Yes) & 31,024 & 0.460 & 0.498 & 0.000 & 1.000 \\
 Residence type (1 = Rural) & 31,024 & 0.664 & 0.472 & 0.000 & 1.000 \\
 Marital status (1 = Married) & 31,024 & 0.651 & 0.477 & 0.000 & 1.000 \\
 \textit{\quad Religion} & & & & & \\
@@ -60,18 +46,32 @@ Marital status (1 = Married) & 31,024 & 0.651 & 0.477 & 0.000 & 1.000 \\
 \quad \quad Quintile 4 & 31,024 & 0.197 & 0.398 & 0.000 & 1.000 \\
 \quad \quad Quintile 5 & 31,024 & 0.187 & 0.390 & 0.000 & 1.000 \\
 \midrule
-\multicolumn{6}{c}{\textbf{Panel D: Additional Variables}} \\
+\multicolumn{6}{c}{\textbf{Panel D: Pension Receipt by Gender and Marital Status}} \\
+\midrule
+\textit{\quad Old age pension, by gender} & & & & & \\
+\quad \quad Female & 31,024 & 0.125 & 0.331 & 0.000 & 1.000 \\
+\quad \quad Male & 31,024 & 0.125 & 0.331 & 0.000 & 1.000 \\
+\textit{\quad Old age pension, by marital status} & & & & & \\
+\quad \quad Married & 31,024 & 0.156 & 0.363 & 0.000 & 1.000 \\
+\quad \quad Widowed & 31,024 & 0.094 & 0.292 & 0.000 & 1.000 \\
+\textit{\quad Widow pension, by gender} & & & & & \\
+\quad \quad Female & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
+\quad \quad Male & 31,024 & 0.000 & 0.000 & 0.000 & 0.000 \\
+\textit{\quad Widow pension, by marital status} & & & & & \\
+\quad \quad Married & 31,024 & 0.000 & 0.020 & 0.000 & 1.000 \\
+\quad \quad Widowed & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
+\midrule
+\multicolumn{6}{c}{\textbf{Panel E: Pension Amounts (Rupees, Recipients Only)}} \\
 \midrule
 Old age pension amount & 7,759 & 8,010.250 & 6,120.875 & 1,000.000 & 30,000.000 \\
 Widow pension amount & 1,833 & 8,384.827 & 5,681.828 & 1,000.000 & 26,000.000 \\
 Any pension amount (old age + widow) & 9,551 & 8,116.524 & 6,088.631 & 1,000.000 & 55,000.000 \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} N, Mean, SD, Min, and Max are computed on non-missing observations of each variable. For categorical variables, Mean is the proportion of observations in that category. Marital status is coded 1 = married and 0 = widowed; other marital categories are set to missing. For the pension-by-group rows, N is the group size and Mean is the share of the group receiving the pension. \\
+\footnotesize \textit{Note:} N, Mean, SD, Min, and Max are computed on non-missing observations of each variable. For categorical variables, Mean is the proportion of observations in that category. Marital status is coded 1 = married and 0 = widowed; other marital categories are set to missing. Any Pension equals one if the respondent receives an old age or a widow pension. In Panel D, N is the full sample and Mean is the share of the full sample that receives the pension and belongs to the group, so the Female and Male rows add up to the overall pension rate. Panel E covers only respondents who receive the pension. \\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}

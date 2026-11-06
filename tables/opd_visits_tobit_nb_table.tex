@@ -5,34 +5,30 @@
 \label{tab:opd_tobit_nb}
 \vspace{3mm}
 \adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccccc}
+\begin{tabular}{lcccccc}
 \toprule
+ & \multicolumn{6}{c}{\textbf{Number of OPD Visits}} \\
+\cmidrule(lr){2-7}
+ & Tobit & NB & Tobit & NB & Tobit & NB \\
+ & (1) & (2) & (3) & (4) & (5) & (6) \\
 \midrule
- & \multicolumn{8}{c}{\textbf{Number of OPD Visits}} \\
-\cmidrule(lr){2-9}
- & Tobit & NB & Tobit & NB & Tobit & NB & Tobit & NB \\
- & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) \\
+\textbf{Any Pension} & 0.688*** & 0.126*** &  &  &  &  \\
+ & (0.101) & (0.023) &  &  &  &  \\
+\textbf{Old Age Pension} &  &  & 0.629*** & 0.120*** &  &  \\
+ &  &  & (0.104) & (0.024) &  &  \\
+\textbf{Widow Pension} &  &  &  &  & 0.413** & 0.055 \\
+ &  &  &  &  & (0.177) & (0.041) \\
 \midrule
-\textbf{Any Pension} & 0.688*** & 0.126*** &  &  &  &  &  &  \\
- & (0.101) & (0.023) &  &  &  &  &  &  \\
-\textbf{Old Age Pension} &  &  & 0.629*** & 0.120*** &  &  &  &  \\
- &  &  & (0.104) & (0.024) &  &  &  &  \\
-\textbf{Widow Pension} &  &  &  &  & 0.413** & 0.055 &  &  \\
- &  &  &  &  & (0.177) & (0.041) &  &  \\
-\textbf{Annapurna Pension} &  &  &  &  &  &  & -0.169 & 0.010 \\
- &  &  &  &  &  &  & (0.448) & (0.116) \\
+\textbf{\(N\)} & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 \\
 \midrule
-\textbf{\(N\)} & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 \\
-\midrule
-\textbf{State FE} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\
-\textbf{Additional Controls} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\
+\textbf{State FE} & Yes & Yes & Yes & Yes & Yes & Yes \\
+\textbf{Additional Controls} & Yes & Yes & Yes & Yes & Yes & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. The count includes respondents with zero visits. Odd-numbered columns report Tobit estimates left-censored at zero; even-numbered columns report negative binomial (NB) estimates with a log link. State fixed effects enter as state dummies. Coefficients are not marginal effects, so the sign and significance are the main focus. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. The count includes respondents with zero visits. Odd-numbered columns report Tobit estimates left-censored at zero; even-numbered columns report negative binomial (NB) estimates with a log link. State fixed effects enter as state dummies. Coefficients are not marginal effects, so the sign and significance are the main focus. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}

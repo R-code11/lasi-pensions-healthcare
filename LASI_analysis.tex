@@ -112,6 +112,7 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{setspace}
+\usepackage{pdflscape}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -182,7 +183,7 @@ Adults}
 \subtitle{Evidence from the Longitudinal Ageing Study in India (LASI)
 Wave 1, 2017--18}
 \author{Ramesh Beniwal}
-\date{2026-11-02}
+\date{2026-11-06}
 \begin{document}
 \maketitle
 
@@ -205,10 +206,9 @@ Wave 1, 2017--18}
 \caption{Summary Statistics}
 \label{tab:summarystats}
 \vspace{3mm}
-\adjustbox{max width=\textwidth}{
+\adjustbox{max totalsize={\textwidth}{0.82\textheight}, center}{
 \begin{tabular}{lrrrrr}
 \toprule
-\midrule
 Variable & N & Mean & SD & Min & Max \\
 \midrule
 \multicolumn{6}{c}{\textbf{Panel A: Dependent Variables}} \\
@@ -222,25 +222,12 @@ Healthcare utilization (overall) & 30,746 & 0.713 & 0.452 & 0.000 & 1.000 \\
 Any Pension & 31,024 & 0.315 & 0.465 & 0.000 & 1.000 \\
 Old age pension & 31,024 & 0.251 & 0.433 & 0.000 & 1.000 \\
 Widow pension & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
-Annapurna pension & 31,024 & 0.011 & 0.106 & 0.000 & 1.000 \\
-\textit{\quad Old age pension, by gender} & & & & & \\
-\quad \quad Female & 16,118 & 0.241 & 0.428 & 0.000 & 1.000 \\
-\quad \quad Male & 14,906 & 0.261 & 0.439 & 0.000 & 1.000 \\
-\textit{\quad Old age pension, by marital status} & & & & & \\
-\quad \quad Married & 20,209 & 0.240 & 0.427 & 0.000 & 1.000 \\
-\quad \quad Widowed & 10,815 & 0.271 & 0.445 & 0.000 & 1.000 \\
-\textit{\quad Widow pension, by gender} & & & & & \\
-\quad \quad Female & 16,118 & 0.114 & 0.318 & 0.000 & 1.000 \\
-\quad \quad Male & 14,906 & 0.000 & 0.000 & 0.000 & 0.000 \\
-\textit{\quad Widow pension, by marital status} & & & & & \\
-\quad \quad Married & 20,209 & 0.001 & 0.024 & 0.000 & 1.000 \\
-\quad \quad Widowed & 10,815 & 0.169 & 0.375 & 0.000 & 1.000 \\
 \midrule
 \multicolumn{6}{c}{\textbf{Panel C: Control Variables}} \\
 \midrule
 Age (years) & 31,024 & 68.864 & 7.434 & 60.000 & 100.000 \\
 Gender (1 = Male) & 31,024 & 0.480 & 0.500 & 0.000 & 1.000 \\
-Education status & 31,024 & 0.460 & 0.498 & 0.000 & 1.000 \\
+Attended school (1 = Yes) & 31,024 & 0.460 & 0.498 & 0.000 & 1.000 \\
 Residence type (1 = Rural) & 31,024 & 0.664 & 0.472 & 0.000 & 1.000 \\
 Marital status (1 = Married) & 31,024 & 0.651 & 0.477 & 0.000 & 1.000 \\
 \textit{\quad Religion} & & & & & \\
@@ -261,18 +248,32 @@ Marital status (1 = Married) & 31,024 & 0.651 & 0.477 & 0.000 & 1.000 \\
 \quad \quad Quintile 4 & 31,024 & 0.197 & 0.398 & 0.000 & 1.000 \\
 \quad \quad Quintile 5 & 31,024 & 0.187 & 0.390 & 0.000 & 1.000 \\
 \midrule
-\multicolumn{6}{c}{\textbf{Panel D: Additional Variables}} \\
+\multicolumn{6}{c}{\textbf{Panel D: Pension Receipt by Gender and Marital Status}} \\
+\midrule
+\textit{\quad Old age pension, by gender} & & & & & \\
+\quad \quad Female & 31,024 & 0.125 & 0.331 & 0.000 & 1.000 \\
+\quad \quad Male & 31,024 & 0.125 & 0.331 & 0.000 & 1.000 \\
+\textit{\quad Old age pension, by marital status} & & & & & \\
+\quad \quad Married & 31,024 & 0.156 & 0.363 & 0.000 & 1.000 \\
+\quad \quad Widowed & 31,024 & 0.094 & 0.292 & 0.000 & 1.000 \\
+\textit{\quad Widow pension, by gender} & & & & & \\
+\quad \quad Female & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
+\quad \quad Male & 31,024 & 0.000 & 0.000 & 0.000 & 0.000 \\
+\textit{\quad Widow pension, by marital status} & & & & & \\
+\quad \quad Married & 31,024 & 0.000 & 0.020 & 0.000 & 1.000 \\
+\quad \quad Widowed & 31,024 & 0.059 & 0.236 & 0.000 & 1.000 \\
+\midrule
+\multicolumn{6}{c}{\textbf{Panel E: Pension Amounts (Rupees, Recipients Only)}} \\
 \midrule
 Old age pension amount & 7,759 & 8,010.250 & 6,120.875 & 1,000.000 & 30,000.000 \\
 Widow pension amount & 1,833 & 8,384.827 & 5,681.828 & 1,000.000 & 26,000.000 \\
 Any pension amount (old age + widow) & 9,551 & 8,116.524 & 6,088.631 & 1,000.000 & 55,000.000 \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} N, Mean, SD, Min, and Max are computed on non-missing observations of each variable. For categorical variables, Mean is the proportion of observations in that category. Marital status is coded 1 = married and 0 = widowed; other marital categories are set to missing. For the pension-by-group rows, N is the group size and Mean is the share of the group receiving the pension. \\
+\footnotesize \textit{Note:} N, Mean, SD, Min, and Max are computed on non-missing observations of each variable. For categorical variables, Mean is the proportion of observations in that category. Marital status is coded 1 = married and 0 = widowed; other marital categories are set to missing. Any Pension equals one if the respondent receives an old age or a widow pension. In Panel D, N is the full sample and Mean is the share of the full sample that receives the pension and belongs to the group, so the Female and Male rows add up to the overall pension rate. Panel E covers only respondents who receive the pension. \\
 Source: Authors' calculations from LASI
 \end{minipage}
 
@@ -284,97 +285,83 @@ Source: Authors' calculations from LASI
 
 \subsection{Outpatient}\label{outpatient}
 
+\begin{landscape}
 \begin{table}[H]
 \centering
 \vspace{1.8mm}
 \caption{Outpatient Healthcare Utilization and Pension}
 \label{tab:outpatient}
 \vspace{3mm}
-\adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccc}
+\adjustbox{width=\textwidth, center}{
+\begin{tabular}{lccccccccc}
 \toprule
+ & \multicolumn{9}{c}{\textbf{Outpatient Healthcare Utilization}} \\
+\cmidrule(lr){2-10}
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) \\
 \midrule
- & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
-\cmidrule(lr){2-7}
- & (1) & (2) & (3) & (4) & (5) & (6) \\
+\textbf{Any Pension} & 0.042*** & 0.036*** & 0.048*** &  &  &  &  &  &  \\
+ & (0.008) & (0.007) & (0.007) &  &  &  &  &  &  \\
+\textbf{Old Age Pension} &  &  &  & 0.031*** & 0.029*** & 0.043*** &  &  &  \\
+ &  &  &  & (0.008) & (0.007) & (0.007) &  &  &  \\
+\textbf{Widow Pension} &  &  &  &  &  &  & 0.058*** & 0.040*** & 0.033*** \\
+ &  &  &  &  &  &  & (0.012) & (0.012) & (0.012) \\
 \midrule
-\textbf{Any Pension} & 0.042*** & 0.036*** & 0.048*** &  &  &  \\
- & (0.008) & (0.007) & (0.007) &  &  &  \\
-\textbf{Old Age Pension} &  &  &  & 0.031*** & 0.029*** & 0.043*** \\
- &  &  &  & (0.008) & (0.007) & (0.007) \\
+\textbf{\(N\)} & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 \\
+\textbf{\(R^2\)} & 0.002 & 0.103 & 0.112 & 0.001 & 0.103 & 0.112 & 0.001 & 0.103 & 0.111 \\
 \midrule
-\textbf{\(N\)} & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 \\
-\textbf{\(R^2\)} & 0.002 & 0.103 & 0.112 & 0.001 & 0.103 & 0.112 \\
-\midrule
-\textbf{Widow Pension} & 0.058*** & 0.040*** & 0.033*** &  &  &  \\
- & (0.012) & (0.012) & (0.012) &  &  &  \\
-\textbf{Annapurna Pension} &  &  &  & -0.031 & -0.031 & -0.023 \\
- &  &  &  & (0.034) & (0.030) & (0.030) \\
-\midrule
-\textbf{\(N\)} & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 \\
-\textbf{\(R^2\)} & 0.001 & 0.103 & 0.111 & 0.000 & 0.102 & 0.111 \\
-\midrule
-\textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
-\textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
+\end{landscape}
 
 \subsection{Inpatient}\label{inpatient}
 
+\begin{landscape}
 \begin{table}[H]
 \centering
 \vspace{1.8mm}
 \caption{Inpatient Healthcare Utilization and Pension}
 \label{tab:inpatient}
 \vspace{3mm}
-\adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccc}
+\adjustbox{width=\textwidth, center}{
+\begin{tabular}{lccccccccc}
 \toprule
+ & \multicolumn{9}{c}{\textbf{Inpatient Healthcare Utilization}} \\
+\cmidrule(lr){2-10}
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) \\
 \midrule
- & \multicolumn{6}{c}{\textbf{Inpatient Healthcare Utilization}} \\
-\cmidrule(lr){2-7}
- & (1) & (2) & (3) & (4) & (5) & (6) \\
+\textbf{Any Pension} & 0.002 & 0.000 & 0.007 &  &  &  &  &  &  \\
+ & (0.005) & (0.005) & (0.005) &  &  &  &  &  &  \\
+\textbf{Old Age Pension} &  &  &  & 0.001 & -0.000 & 0.001 &  &  &  \\
+ &  &  &  & (0.005) & (0.005) & (0.006) &  &  &  \\
+\textbf{Widow Pension} &  &  &  &  &  &  & 0.003 & -0.001 & 0.018* \\
+ &  &  &  &  &  &  & (0.009) & (0.009) & (0.010) \\
 \midrule
-\textbf{Any Pension} & 0.002 & 0.000 & 0.007 &  &  &  \\
- & (0.005) & (0.005) & (0.005) &  &  &  \\
-\textbf{Old Age Pension} &  &  &  & 0.001 & -0.000 & 0.001 \\
- &  &  &  & (0.005) & (0.005) & (0.006) \\
+\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
+\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
 \midrule
-\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
-\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
-\midrule
-\textbf{Widow Pension} & 0.003 & -0.001 & 0.018* &  &  &  \\
- & (0.009) & (0.009) & (0.010) &  &  &  \\
-\textbf{Annapurna Pension} &  &  &  & 0.017 & 0.043** & 0.043** \\
- &  &  &  & (0.022) & (0.022) & (0.022) \\
-\midrule
-\textbf{\(N\)} & 21,501 & 21,501 & 20,760 & 21,501 & 21,501 & 20,760 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.117 & 0.117 & 0.116 & 0.117 & 0.117 & 0.116 \\
-\textbf{\(R^2\)} & 0.000 & 0.012 & 0.024 & 0.000 & 0.012 & 0.024 \\
-\midrule
-\textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
-\textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
+\end{landscape}
 
 \section{Pension Amount}\label{pension-amount}
 
@@ -387,7 +374,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{3}{c}{\textbf{Outpatient Healthcare Utilization}} & \multicolumn{3}{c}{\textbf{Inpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
  & (1) & (2) & (3) & (4) & (5) & (6) \\
@@ -402,12 +388,11 @@ Source: Authors' calculations from LASI
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey who report receiving a pension amount. Any Pension Amount is the natural logarithm of the pension amount received by the respondent. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey who report receiving a pension amount. Any Pension Amount is the natural logarithm of the pension amount received by the respondent. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Inpatient healthcare utilization is an indicator equal to one if the respondent was admitted to a hospital or long-term care facility for at least one night during the last 12 months. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -422,34 +407,30 @@ Visits)}\label{tobit-and-negative-binomial-number-of-opd-visits}
 \label{tab:opd_tobit_nb}
 \vspace{3mm}
 \adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccccc}
+\begin{tabular}{lcccccc}
 \toprule
+ & \multicolumn{6}{c}{\textbf{Number of OPD Visits}} \\
+\cmidrule(lr){2-7}
+ & Tobit & NB & Tobit & NB & Tobit & NB \\
+ & (1) & (2) & (3) & (4) & (5) & (6) \\
 \midrule
- & \multicolumn{8}{c}{\textbf{Number of OPD Visits}} \\
-\cmidrule(lr){2-9}
- & Tobit & NB & Tobit & NB & Tobit & NB & Tobit & NB \\
- & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) \\
+\textbf{Any Pension} & 0.688*** & 0.126*** &  &  &  &  \\
+ & (0.101) & (0.023) &  &  &  &  \\
+\textbf{Old Age Pension} &  &  & 0.629*** & 0.120*** &  &  \\
+ &  &  & (0.104) & (0.024) &  &  \\
+\textbf{Widow Pension} &  &  &  &  & 0.413** & 0.055 \\
+ &  &  &  &  & (0.177) & (0.041) \\
 \midrule
-\textbf{Any Pension} & 0.688*** & 0.126*** &  &  &  &  &  &  \\
- & (0.101) & (0.023) &  &  &  &  &  &  \\
-\textbf{Old Age Pension} &  &  & 0.629*** & 0.120*** &  &  &  &  \\
- &  &  & (0.104) & (0.024) &  &  &  &  \\
-\textbf{Widow Pension} &  &  &  &  & 0.413** & 0.055 &  &  \\
- &  &  &  &  & (0.177) & (0.041) &  &  \\
-\textbf{Annapurna Pension} &  &  &  &  &  &  & -0.169 & 0.010 \\
- &  &  &  &  &  &  & (0.448) & (0.116) \\
+\textbf{\(N\)} & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 \\
 \midrule
-\textbf{\(N\)} & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 & 29,716 \\
-\midrule
-\textbf{State FE} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\
-\textbf{Additional Controls} & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\
+\textbf{State FE} & Yes & Yes & Yes & Yes & Yes & Yes \\
+\textbf{Additional Controls} & Yes & Yes & Yes & Yes & Yes & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. The count includes respondents with zero visits. Odd-numbered columns report Tobit estimates left-censored at zero; even-numbered columns report negative binomial (NB) estimates with a log link. State fixed effects enter as state dummies. Coefficients are not marginal effects, so the sign and significance are the main focus. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. The count includes respondents with zero visits. Odd-numbered columns report Tobit estimates left-censored at zero; even-numbered columns report negative binomial (NB) estimates with a log link. State fixed effects enter as state dummies. Coefficients are not marginal effects, so the sign and significance are the main focus. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -465,7 +446,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
  & \multicolumn{3}{c}{\textbf{Urban}} & \multicolumn{3}{c}{\textbf{Rural}} \\
@@ -487,23 +467,17 @@ Source: Authors' calculations from LASI
 \midrule
 \textbf{\(R^2\)} & 0.001 & 0.083 & 0.090 & 0.001 & 0.117 & 0.126 \\
 \midrule
-\textbf{Annapurna Pension} & 0.041 & 0.009 & 0.017 & -0.038 & -0.028 & -0.026 \\
- & (0.083) & (0.069) & (0.072) & (0.037) & (0.032) & (0.032) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.083 & 0.089 & 0.000 & 0.117 & 0.126 \\
-\midrule
 \textbf{\(N\)} & 10,288 & 10,288 & 9,777 & 20,455 & 20,455 & 19,939 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.577 & 0.577 & 0.579 & 0.548 & 0.548 & 0.548 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -517,7 +491,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
  & \multicolumn{3}{c}{\textbf{Upper Caste}} & \multicolumn{3}{c}{\textbf{Lower Caste}} \\
@@ -539,23 +512,17 @@ Source: Authors' calculations from LASI
 \midrule
 \textbf{\(R^2\)} & 0.000 & 0.059 & 0.068 & 0.001 & 0.115 & 0.122 \\
 \midrule
-\textbf{Annapurna Pension} & 0.121* & 0.048 & 0.062 & -0.044 & -0.044 & -0.034 \\
- & (0.073) & (0.069) & (0.070) & (0.037) & (0.033) & (0.033) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.059 & 0.068 & 0.000 & 0.114 & 0.122 \\
-\midrule
 \textbf{\(N\)} & 7,962 & 7,960 & 7,960 & 21,755 & 21,755 & 21,754 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.617 & 0.617 & 0.617 & 0.536 & 0.536 & 0.536 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -569,7 +536,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
  & \multicolumn{3}{c}{\textbf{Lower MPCE (Q1-Q3)}} & \multicolumn{3}{c}{\textbf{Higher MPCE (Q4-Q5)}} \\
@@ -591,23 +557,17 @@ Source: Authors' calculations from LASI
 \midrule
 \textbf{\(R^2\)} & 0.001 & 0.107 & 0.110 & 0.002 & 0.103 & 0.107 \\
 \midrule
-\textbf{Annapurna Pension} & -0.031 & -0.026 & -0.021 & 0.002 & -0.033 & -0.034 \\
- & (0.040) & (0.035) & (0.035) & (0.056) & (0.050) & (0.051) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.106 & 0.110 & 0.000 & 0.102 & 0.107 \\
-\midrule
 \textbf{\(N\)} & 18,930 & 18,930 & 18,383 & 11,813 & 11,813 & 11,333 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.533 & 0.533 & 0.533 & 0.598 & 0.598 & 0.598 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -615,51 +575,44 @@ Source: Authors' calculations from LASI
 \begin{table}[H]
 \centering
 \vspace{1.8mm}
-\caption{Outpatient Healthcare Utilization and Pension: Heterogeneity by Education}
+\caption{Outpatient Healthcare Utilization and Pension: Heterogeneity by School Attendance}
 \label{tab:het_education}
 \vspace{3mm}
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
- & \multicolumn{3}{c}{\textbf{No Education}} & \multicolumn{3}{c}{\textbf{Any Education}} \\
+ & \multicolumn{3}{c}{\textbf{Attended School}} & \multicolumn{3}{c}{\textbf{Not Attended School}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
  & (1) & (2) & (3) & (4) & (5) & (6) \\
 \midrule
-\textbf{Any Pension} & 0.053*** & 0.044*** & 0.049*** & 0.044*** & 0.042*** & 0.046*** \\
- & (0.010) & (0.009) & (0.009) & (0.011) & (0.011) & (0.011) \\
+\textbf{Any Pension} & 0.044*** & 0.042*** & 0.046*** & 0.053*** & 0.044*** & 0.049*** \\
+ & (0.011) & (0.011) & (0.011) & (0.010) & (0.009) & (0.009) \\
 \midrule
-\textbf{\(R^2\)} & 0.003 & 0.116 & 0.124 & 0.001 & 0.093 & 0.102 \\
+\textbf{\(R^2\)} & 0.001 & 0.093 & 0.102 & 0.003 & 0.116 & 0.124 \\
 \midrule
-\textbf{Old Age Pension} & 0.038*** & 0.031*** & 0.041*** & 0.033*** & 0.036*** & 0.045*** \\
- & (0.010) & (0.009) & (0.009) & (0.012) & (0.011) & (0.011) \\
+\textbf{Old Age Pension} & 0.033*** & 0.036*** & 0.045*** & 0.038*** & 0.031*** & 0.041*** \\
+ & (0.012) & (0.011) & (0.011) & (0.010) & (0.009) & (0.009) \\
 \midrule
-\textbf{\(R^2\)} & 0.001 & 0.115 & 0.124 & 0.001 & 0.092 & 0.101 \\
+\textbf{\(R^2\)} & 0.001 & 0.092 & 0.101 & 0.001 & 0.115 & 0.124 \\
 \midrule
-\textbf{Widow Pension} & 0.056*** & 0.042*** & 0.031** & 0.112*** & 0.080*** & 0.051** \\
- & (0.014) & (0.013) & (0.014) & (0.025) & (0.024) & (0.026) \\
+\textbf{Widow Pension} & 0.112*** & 0.080*** & 0.051** & 0.056*** & 0.042*** & 0.031** \\
+ & (0.025) & (0.024) & (0.026) & (0.014) & (0.013) & (0.014) \\
 \midrule
-\textbf{\(R^2\)} & 0.001 & 0.115 & 0.123 & 0.001 & 0.092 & 0.100 \\
+\textbf{\(R^2\)} & 0.001 & 0.092 & 0.100 & 0.001 & 0.115 & 0.123 \\
 \midrule
-\textbf{Annapurna Pension} & -0.015 & -0.005 & -0.003 & -0.051 & -0.062 & -0.054 \\
- & (0.040) & (0.036) & (0.037) & (0.047) & (0.043) & (0.042) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.115 & 0.122 & 0.000 & 0.092 & 0.100 \\
-\midrule
-\textbf{\(N\)} & 16,617 & 16,617 & 16,079 & 14,126 & 14,126 & 13,637 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.544 & 0.544 & 0.545 & 0.574 & 0.574 & 0.574 \\
+\textbf{\(N\)} & 14,126 & 14,126 & 13,637 & 16,617 & 16,617 & 16,079 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.574 & 0.574 & 0.574 & 0.544 & 0.544 & 0.545 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -673,7 +626,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
  & \multicolumn{3}{c}{\textbf{Age $\leq$ 75}} & \multicolumn{3}{c}{\textbf{Age $>$ 75}} \\
@@ -695,23 +647,17 @@ Source: Authors' calculations from LASI
 \midrule
 \textbf{\(R^2\)} & 0.001 & 0.102 & 0.111 & 0.000 & 0.111 & 0.120 \\
 \midrule
-\textbf{Annapurna Pension} & -0.039 & -0.035 & -0.025 & 0.013 & -0.002 & -0.007 \\
- & (0.037) & (0.032) & (0.032) & (0.076) & (0.078) & (0.077) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.101 & 0.111 & 0.000 & 0.111 & 0.120 \\
-\midrule
 \textbf{\(N\)} & 25,388 & 25,388 & 24,545 & 5,355 & 5,355 & 5,171 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.560 & 0.560 & 0.561 & 0.545 & 0.545 & 0.546 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -725,7 +671,6 @@ Source: Authors' calculations from LASI
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lcccccc}
 \toprule
-\midrule
  & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
 \cmidrule(lr){2-7}
  & \multicolumn{3}{c}{\textbf{Male}} & \multicolumn{3}{c}{\textbf{Female}} \\
@@ -747,23 +692,17 @@ Source: Authors' calculations from LASI
 \midrule
 \textbf{\(R^2\)} & -- & -- & -- & 0.001 & 0.108 & 0.117 \\
 \midrule
-\textbf{Annapurna Pension} & -0.010 & -0.022 & -0.017 & -0.050 & -0.036 & -0.027 \\
- & (0.043) & (0.038) & (0.039) & (0.041) & (0.038) & (0.038) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.099 & 0.107 & 0.000 & 0.108 & 0.117 \\
-\midrule
 \textbf{\(N\)} & 14,739 & 14,739 & 14,290 & 16,004 & 16,004 & 15,426 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.539 & 0.539 & 0.539 & 0.575 & 0.575 & 0.575 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Additional Controls are the same as in the main tables, excluding the variable used to split the sample. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
@@ -780,7 +719,6 @@ type}\label{opd-visits-by-facility-type}
 \adjustbox{max width=\textwidth}{
 \begin{tabular}{lccccccccc}
 \toprule
-\midrule
  & \multicolumn{9}{c}{\textbf{Number of OPD Visits}} \\
 \cmidrule(lr){2-10}
  & \multicolumn{3}{c}{\textbf{Public}} & \multicolumn{3}{c}{\textbf{Private}} & \multicolumn{3}{c}{\textbf{Both}} \\
@@ -802,79 +740,66 @@ type}\label{opd-visits-by-facility-type}
 \midrule
 \textbf{\(R^2\)} & 0.000 & 0.106 & 0.118 & 0.000 & 0.088 & 0.100 & 0.000 & 0.091 & 0.101 \\
 \midrule
-\textbf{Annapurna Pension} & 0.403 & 1.430* & 1.487** & -1.314*** & -0.672 & -0.637 & -0.930 & 0.035 & -0.035 \\
- & (0.747) & (0.732) & (0.746) & (0.385) & (0.409) & (0.421) & (0.866) & (0.733) & (0.716) \\
-\midrule
-\textbf{\(R^2\)} & 0.000 & 0.107 & 0.120 & 0.001 & 0.088 & 0.100 & 0.000 & 0.091 & 0.101 \\
-\midrule
 \textbf{\(N\)} & 4,204 & 4,204 & 4,065 & 9,832 & 9,832 & 9,502 & 2,707 & 2,707 & 2,617 \\
 \textbf{\(Mean\; of\; Dep.\; Variable\)} & 4.306 & 4.306 & 4.311 & 4.724 & 4.724 & 4.724 & 6.470 & 6.470 & 6.453 \\
 \midrule
 \textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
 \textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. Public, Private, and Both refer to the type of facility visited. The sample is restricted to respondents with at least one outpatient visit. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Number of OPD visits is the number of outpatient visits to a healthcare provider during the last 12 months. Public, Private, and Both refer to the type of facility visited. The sample is restricted to respondents with at least one outpatient visit. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
 
 \section{Probit (Outpatient)}\label{probit-outpatient}
 
+\begin{landscape}
 \begin{table}[H]
 \centering
 \vspace{1.8mm}
 \caption{Outpatient Healthcare Utilization and Pension: Probit Estimates}
 \label{tab:outpatient_probit}
 \vspace{3mm}
-\adjustbox{max width=\textwidth}{
-\begin{tabular}{lcccccc}
+\adjustbox{width=\textwidth, center}{
+\begin{tabular}{lccccccccc}
 \toprule
+ & \multicolumn{9}{c}{\textbf{Outpatient Healthcare Utilization}} \\
+\cmidrule(lr){2-10}
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) \\
 \midrule
- & \multicolumn{6}{c}{\textbf{Outpatient Healthcare Utilization}} \\
-\cmidrule(lr){2-7}
- & (1) & (2) & (3) & (4) & (5) & (6) \\
+\textbf{Any Pension} & 0.106*** & 0.100*** & 0.137*** &  &  &  &  &  &  \\
+ & (0.020) & (0.019) & (0.020) &  &  &  &  &  &  \\
+\quad \textit{AME} & 0.042 & 0.036 & 0.049 &  &  &  &  &  &  \\
+\quad \textit{MEM} & 0.042 & 0.038 & 0.053 &  &  &  &  &  &  \\
+\textbf{Old Age Pension} &  &  &  & 0.080*** & 0.079*** & 0.123*** &  &  &  \\
+ &  &  &  & (0.021) & (0.020) & (0.020) &  &  &  \\
+\quad \textit{AME} &  &  &  & 0.031 & 0.029 & 0.044 &  &  &  \\
+\quad \textit{MEM} &  &  &  & 0.031 & 0.030 & 0.048 &  &  &  \\
+\textbf{Widow Pension} &  &  &  &  &  &  & 0.150*** & 0.112*** & 0.093*** \\
+ &  &  &  &  &  &  & (0.032) & (0.032) & (0.035) \\
+\quad \textit{AME} &  &  &  &  &  &  & 0.058 & 0.040 & 0.033 \\
+\quad \textit{MEM} &  &  &  &  &  &  & 0.058 & 0.042 & 0.036 \\
 \midrule
-\textbf{Any Pension} & 0.106*** & 0.100*** & 0.137*** &  &  &  \\
- & (0.020) & (0.019) & (0.020) &  &  &  \\
-\quad \textit{AME} & 0.042 & 0.036 & 0.049 &  &  &  \\
-\quad \textit{MEM} & 0.042 & 0.038 & 0.053 &  &  &  \\
-\textbf{Old Age Pension} &  &  &  & 0.080*** & 0.079*** & 0.123*** \\
- &  &  &  & (0.021) & (0.020) & (0.020) \\
-\quad \textit{AME} &  &  &  & 0.031 & 0.029 & 0.044 \\
-\quad \textit{MEM} &  &  &  & 0.031 & 0.030 & 0.048 \\
+\textbf{\(N\)} & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 \\
+\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 \\
+\textbf{Pseudo \(R^2\)} & 0.001 & 0.079 & 0.087 & 0.001 & 0.079 & 0.086 & 0.001 & 0.078 & 0.085 \\
 \midrule
-\textbf{Pseudo \(R^2\)} & 0.001 & 0.079 & 0.087 & 0.001 & 0.079 & 0.086 \\
-\midrule
-\textbf{Widow Pension} & 0.150*** & 0.112*** & 0.093*** &  &  &  \\
- & (0.032) & (0.032) & (0.035) &  &  &  \\
-\quad \textit{AME} & 0.058 & 0.040 & 0.033 &  &  &  \\
-\quad \textit{MEM} & 0.058 & 0.042 & 0.036 &  &  &  \\
-\textbf{Annapurna Pension} &  &  &  & -0.078 & -0.085 & -0.064 \\
- &  &  &  & (0.086) & (0.080) & (0.082) \\
-\quad \textit{AME} &  &  &  & -0.031 & -0.031 & -0.023 \\
-\quad \textit{MEM} &  &  &  & -0.031 & -0.033 & -0.025 \\
-\midrule
-\textbf{\(N\)} & 30,743 & 30,743 & 29,716 & 30,743 & 30,743 & 29,716 \\
-\textbf{\(Mean\; of\; Dep.\; Variable\)} & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 & 0.558 \\
-\textbf{Pseudo \(R^2\)} & 0.001 & 0.078 & 0.085 & 0.000 & 0.078 & 0.085 \\
-\midrule
-\textbf{State FE} & No & Yes & Yes & No & Yes & Yes \\
-\textbf{Additional Controls} & No & No & Yes & No & No & Yes \\
+\textbf{State FE} & No & Yes & Yes & No & Yes & Yes & No & Yes & Yes \\
+\textbf{Additional Controls} & No & No & Yes & No & No & Yes & No & No & Yes \\
 \bottomrule
-\midrule
 \end{tabular}
 }
 \vspace{2mm}
 \begin{minipage}{0.95\textwidth}
-\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension, Widow Pension, and Annapurna Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age, Widow, or Annapurna pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Coefficients are probit estimates, and each comes from a separate regression. AME is the average marginal effect and MEM is the marginal effect at the means, both computed from equivalent models with state fixed effects entered as dummies. Additional Controls include age, gender, educational attainment, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
+\footnotesize \textit{Note:} The sample consists of individuals aged 60-100 years at the time of the survey. Old Age Pension and Widow Pension are separate indicators for receipt of the respective pension benefits. Any Pension is an indicator equal to one if the respondent receives at least one of the Old Age or Widow pensions. Outpatient healthcare utilization is an indicator equal to one if the respondent consulted a healthcare provider (doctors, AYUSH practitioners, dentists, nurses, and traditional healers) during the last 12 months. Coefficients are probit estimates, and each comes from a separate regression. AME is the average marginal effect and MEM is the marginal effect at the means, both computed from equivalent models with state fixed effects entered as dummies. Additional Controls include age, gender, whether the respondent attended school, marital status (1 = married, 0 = widowed; other categories are excluded), rural or urban residence, religion, caste category, and monthly per capita consumption expenditure (MPCE) quintile. Standard errors clustered at PSU level are in parentheses. \\ * p$<$0.10, ** p$<$0.05, *** p$<$0.01\\
 Source: Authors' calculations from LASI
 \end{minipage}
 \end{table}
+\end{landscape}
 
 
 
