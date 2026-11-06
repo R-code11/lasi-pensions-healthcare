@@ -10,14 +10,12 @@ format:
 ## About this project
 
 This page holds the replication code and the tables for a study of how pension
-receipt (old age, widow and Annapurna pensions) is related to outpatient and
+receipt (old age and widow pension) is related to outpatient and
 inpatient healthcare use among Indians aged 60-100, using LASI Wave 1.
 
 ## Read the tables
 
 - [Analysis and tables](LASI_analysis.qmd): the full document with all tables.
-  Use **Other Formats → PDF** in the right-hand side menu of that page to
-  download it as a PDF.
 - [Download the PDF directly](LASI_analysis.pdf)
 
 ## Tables in the analysis
@@ -29,10 +27,7 @@ inpatient healthcare use among Indians aged 60-100, using LASI Wave 1.
 5. [Heterogeneity (residence, caste, MPCE, education, age, gender, facility type)](LASI_analysis.qmd#heterogeneity-outpatient)
 6. [Probit estimates with marginal effects](LASI_analysis.qmd#probit-outpatient)
 
-Each table is also saved as a LaTeX file (folder `tables/`) that can be pasted
-directly into Overleaf. They need `booktabs`, `adjustbox`, `float` and `amsmath`.
 
 ## Data
 
 LASI microdata cannot be redistributed, so it is not part of this repository.
-Request it from the LASI team (IIPS) and follow the steps in the README.
